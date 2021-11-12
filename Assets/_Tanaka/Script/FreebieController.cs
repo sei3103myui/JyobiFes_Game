@@ -23,10 +23,16 @@ public class FreebieController : UnitBase
     {
         // 死んだらManagerにスコアを加算する処理を実行 + 自分のScore分
         // 吹っ飛ぶ
-        rb.AddForce(-transform.forward * 200);
-        GameManager.Instance.AddScore(point);
-        // 対応するUIのSetActiveをFalseにする
-        GameManager.isChoiceDown = true;
+        // ここが可笑しい
+        // transformを移動させる、
+        transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + 2);
+        StartCoroutine(MyCoroutine.Delay(1, () =>
+        {
+            GameManager.Instance.AddScore(point);
+            // 対応するUIのSetActiveをFalseにする
+            GameManager.isChoiceDown = true;
+        }));
+       
         // 自身のSetActiveをFalseにする(消すとList管理が面倒)
     }
 

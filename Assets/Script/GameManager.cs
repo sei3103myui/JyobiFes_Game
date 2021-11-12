@@ -201,6 +201,16 @@ public class GameManager : Singleton<GameManager>
 
     }
 
+
+   /// <summary>
+   /// 
+   /// </summary>
+   /// <param name="num">枚数</param>
+    public void SelectSheetClick(GameObject obj)
+    {
+
+    }
+
     /// <summary>
     /// ボタン(遊ぶ)に追加する関数
     /// </summary>
