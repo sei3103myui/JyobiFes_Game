@@ -35,4 +35,9 @@ public class ItemMoveControler : MonoBehaviour
         yield return new WaitForSeconds(time);
         isMove = false;
     }
+
+    public void ActiveItemFlg()
+    {
+
+    }
 }
