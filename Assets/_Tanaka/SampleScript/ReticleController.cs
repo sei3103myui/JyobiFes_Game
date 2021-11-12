@@ -11,6 +11,17 @@ public class ReticleController : MonoBehaviour
 
     public RectTransform rect;
 
+    // 追加項目
+    public float timeSpan; // ランダム処理を実行させる間隔
+    public int maxReticleSpeed = 800; // 最大値 (レティクルのスピード)
+    public int minReticleSpeed = 300; // 最小値(レティクルのスピード)
+    public int maxSpanTime = 2; // 最大値（スピードが変わる間隔）
+    public int minSpanTime = 0; // 最小値（スピードが変わる間隔）
+    public bool isFunc; // 一度だけ呼びたい処理
+
+    private float timeCount; // 時間計測用
+    private int reticleMoveSpeed; // ランダムで出力したスピード値を格納する変数
+
     void Start()
     {   
         // 円移動の中心地点を決める
@@ -32,7 +43,7 @@ public class ReticleController : MonoBehaviour
         if (!GameManager.isShoot)
         {
             // 速度が一定ずつ加算
-            angle += Time.deltaTime * speed;
+            angle += Time.deltaTime * RandomGenerator();
             // 何度からラジアンに変換
             var rad = angle * Mathf.Deg2Rad;
             // 何度をInt型でキャスト
@@ -64,6 +75,38 @@ public class ReticleController : MonoBehaviour
             // Sin関数は-1 ~ 1の値(常に)
         }
 
+    }
+
+    // @追加
+    /// <summary>
+    /// ランダム生成用の関数
+    /// </summary>
+    private int RandomGenerator()
+    {
+        if (!isFunc)
+        {
+            // ランダムな数値を格納
+            timeSpan = Random.Range(minSpanTime, maxSpanTime);
+            Debug.LogWarning("■ランダムの間隔" + timeSpan);
+            isFunc = true;
+        }
+
+        timeCount += Time.deltaTime;
+
+        // ランダムで出力した間隔になったら実行
+        if (timeCount >= timeSpan)
+        {
+            // スピードのランダム設定 
+            // 指定した閾値でランダムのスピード値を格納する
+            reticleMoveSpeed = Random.Range(minReticleSpeed, maxReticleSpeed);
+            Debug.LogWarning("△ランダムなスピード" + reticleMoveSpeed);
+            isFunc = false;
+            // カウントの初期化
+            timeCount = 0;
+        }
+
+        // ランダムで出力したスピード値を返す
+        return reticleMoveSpeed;
     }
 
 
