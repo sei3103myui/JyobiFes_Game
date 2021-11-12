@@ -31,7 +31,7 @@ public class ShotPrefabController : MonoBehaviour
     }
     void Start()
     {
-        
+        Destroy(gameObject, 5f);
     }
 
     private void FixedUpdate()

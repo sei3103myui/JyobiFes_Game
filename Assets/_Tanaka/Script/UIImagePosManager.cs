@@ -157,7 +157,7 @@ public class UIImagePosManager : MonoBehaviour
         }));
 
         worldPos = obj.transform.position;
-        worldPos = new Vector3(worldPos.x, worldPos.y,worldPos.z - 5);
+        worldPos = new Vector3(worldPos.x, worldPos.y,worldPos.z - 3);
         CMShotCam.transform.position = worldPos;
     }
 
