@@ -296,9 +296,14 @@ public class GameManager : Singleton<GameManager>
             // bgmをアンパンマンへ
             AudioManager.Instance.PlayBGM(1);
         }
+        else if(choiceNum == 0)
+        {
+            AudioManager.Instance.PlayBGM(5);
+        }
         else
         {
             // 通常bgmを再生
+            AudioManager.Instance.PlayBGM(2);
         }
 
         // choiceNumに対応するobjのLayerを変更
