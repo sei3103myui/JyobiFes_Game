@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 
 public class ShotPrefabController : MonoBehaviour
 {
+    public Text textUI;
     // Prefabに付けるコントローラー
     // Rigidbody
     private Rigidbody rb;
@@ -28,6 +29,7 @@ public class ShotPrefabController : MonoBehaviour
     {
         // Rigidbody取得
         rb = GetComponent<Rigidbody>();
+        textUI = GameManager.Instance.textHit;
     }
     void Start()
     {
@@ -52,7 +54,7 @@ public class ShotPrefabController : MonoBehaviour
     {
         // まず当たったobjのレイヤーを見る
         // ビット演算
-
+       
         Debug.Log(other.gameObject.name + "気ミ");
         int layer = 1 << other.gameObject.layer;
         Debug.Log("当たったLayer" + layer);
@@ -67,14 +69,18 @@ public class ShotPrefabController : MonoBehaviour
 
             Debug.Log(hitLayer.value);
             if(layer == hitLayer)
-            {   
+            {
                 // しょうがない、これで
+                textUI.gameObject.SetActive(true);
+           
                 var unit = other.transform.parent.gameObject.GetComponent<UnitBase>();
                 // もしUnitが取得できたなら
                 if (unit)
                 {
                     Debug.Log("ヒット");
                     unit.HitDamage(attack);
+                    var itemCon = unit.gameObject.GetComponent<FreebieController>().itemMoveCtn;
+                    itemCon.isMove = true;
                 }
                 
             }
