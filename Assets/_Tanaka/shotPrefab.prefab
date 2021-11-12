@@ -113,7 +113,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 100
-  attack: 1000
+  attack: 100
   hitLayer:
     serializedVersion: 2
     m_Bits: 2048
