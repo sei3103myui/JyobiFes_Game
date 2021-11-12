@@ -29,7 +29,7 @@ public class AudioManager : Singleton<AudioManager>
     /// <param name="namber">効果音の番号</param>
     public void PlayBGM(int namber)
     {
-        audioSE.PlayOneShot(bgmClips[namber]);
+        audioBGM.PlayOneShot(bgmClips[namber]);
     }
 
     /// <summary>
@@ -49,4 +49,9 @@ public class AudioManager : Singleton<AudioManager>
         audioSE.Stop();
     }
 
+
+    public void StopBGM()
+    {
+        audioBGM.Stop();
+    }
 }

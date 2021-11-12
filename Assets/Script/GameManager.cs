@@ -21,6 +21,7 @@ public enum Phase
 
 public class GameManager : Singleton<GameManager>
 {
+    public Text textHit;
     //[SerializeField] private PlayerInput playerInput;
     [Header("ゲームフェイズ管理")]
     public Phase gamePhase;
@@ -149,7 +150,7 @@ public class GameManager : Singleton<GameManager>
             case Phase.ShootEnd:
                 // 再挑戦するか、やり直すか表示
                 // 倒した場合、強制的にChoice、弾が0になったらResultへ移行する管理関数
-               
+                
                 
                 break;
             case Phase.Result:
@@ -276,6 +277,7 @@ public class GameManager : Singleton<GameManager>
                 StartCoroutine(MyCoroutine.Delay(5, () =>
                 {
                     gamePhase = Phase.ShootEnd;
+                    textHit.gameObject.SetActive(false);
                     StartCoroutine(shootEndRoutine);
                 }));
 
@@ -288,22 +290,25 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     public void ChoiceClick()
     {
+        AudioManager.Instance.StopBGM();
         gamePhase = Phase.Ready;
         uiImagePosManager.parentChoiceUIObj.SetActive(false);
         uiImagePosManager.parentShotUIObj.SetActive(true);
         if(choiceNum == 4)
         {
             // bgmをアンパンマンへ
+            AudioManager.Instance.StopBGM();
             AudioManager.Instance.PlayBGM(1);
         }
-        else if(choiceNum == 0)
+        else if (choiceNum == 0)
         {
-            AudioManager.Instance.PlayBGM(5);
+            AudioManager.Instance.PlayBGM(2);
         }
         else
         {
+            AudioManager.Instance.StopBGM();
             // 通常bgmを再生
-            AudioManager.Instance.PlayBGM(2);
+            AudioManager.Instance.PlayBGM(3);
         }
 
         // choiceNumに対応するobjのLayerを変更
