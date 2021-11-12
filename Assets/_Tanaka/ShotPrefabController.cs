@@ -79,6 +79,8 @@ public class ShotPrefabController : MonoBehaviour
                 {
                     Debug.Log("ヒット");
                     unit.HitDamage(attack);
+                    var itemCon = unit.gameObject.GetComponent<FreebieController>().itemMoveCtn;
+                    itemCon.isMove = true;
                 }
                 
             }
