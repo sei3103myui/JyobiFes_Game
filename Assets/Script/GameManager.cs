@@ -34,7 +34,7 @@ public class GameManager : Singleton<GameManager>
     [Header("ゲーム中のUI")]
     [SerializeField] private Text scoreText;
 
-    private int score = 0;
+    public int score = 0;
     private const int MAX_SOCRE = 9999;
 
     // 現在選択している景品のナンバー
