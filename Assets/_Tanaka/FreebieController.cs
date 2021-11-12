@@ -4,6 +4,16 @@ using UnityEngine;
 
 public class FreebieController : UnitBase
 {
+
+    public TextMesh childObjText;
+
+    
+
+    private void Awake()
+    {
+        childObjText.text = point.ToString();
+    }
+
     protected override void Death()
     {
         // 死んだらManagerにスコアを加算する処理を実行 + 自分のScore分
