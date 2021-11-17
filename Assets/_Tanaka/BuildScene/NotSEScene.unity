@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_LightingSettings: {fileID: 4890085278179872738, guid: cda4d95583b6a1b43a513fefd5d71502, type: 2}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: 6f743102359992148a809c3a64cd225d, type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -3990,7 +3990,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitHp: 0
-  unitMaxHp: 100
+  unitMaxHp: 500
   unitNum: 0
   point: 1500
   childObjText: {fileID: 1890401359}
@@ -4925,7 +4925,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36fbceee324db124c94e4ea39739e429, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ticeketNum: 3
+  ticeketNum: 2
   ticketText: {fileID: 275198500}
 --- !u!114 &799871760
 MonoBehaviour:
@@ -6419,7 +6419,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36fbceee324db124c94e4ea39739e429, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ticeketNum: 4
+  ticeketNum: 3
   ticketText: {fileID: 386350957}
 --- !u!114 &1090998417
 MonoBehaviour:
@@ -7460,7 +7460,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36fbceee324db124c94e4ea39739e429, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ticeketNum: 2
+  ticeketNum: 1
   ticketText: {fileID: 1342228468}
 --- !u!114 &1221418672
 MonoBehaviour:
@@ -8863,11 +8863,12 @@ MonoBehaviour:
   audioSE: {fileID: 526619047}
   bgmClips:
   - {fileID: 8300000, guid: 67589c9229a2a3542b54024ff4853ff2, type: 3}
-  - {fileID: 8300000, guid: 9749ddf80241ef64081d4e0085185367, type: 3}
-  - {fileID: 8300000, guid: 57dbb6c78411ae2468084cb820f89910, type: 3}
+  - {fileID: 8300000, guid: 07731351317bb8b4e91f35374a9c9bfd, type: 3}
+  - {fileID: 8300000, guid: 9cb86cd8e594f394e8788dddf7915da6, type: 3}
   - {fileID: 8300000, guid: f1f4620270ba4a646b08621e30539cbf, type: 3}
   seClips:
   - {fileID: 8300000, guid: 67589c9229a2a3542b54024ff4853ff2, type: 3}
+  - {fileID: 8300000, guid: 9b6cc306697aac6499a79a2ef1809e1e, type: 3}
 --- !u!4 &1643674483
 Transform:
   m_ObjectHideFlags: 0

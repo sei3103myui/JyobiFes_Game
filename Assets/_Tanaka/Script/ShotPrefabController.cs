@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class ShotPrefabController : MonoBehaviour
 {
-    public Text textUI;
+  
     // Prefabに付けるコントローラー
     // Rigidbody
     private Rigidbody rb;
@@ -29,7 +29,7 @@ public class ShotPrefabController : MonoBehaviour
     {
         // Rigidbody取得
         rb = GetComponent<Rigidbody>();
-        textUI = GameManager.Instance.textHit;
+        
     }
     void Start()
     {
@@ -54,10 +54,9 @@ public class ShotPrefabController : MonoBehaviour
     {
         // まず当たったobjのレイヤーを見る
         // ビット演算
-       
-        Debug.Log(other.gameObject.name + "気ミ");
+      
         int layer = 1 << other.gameObject.layer;
-        Debug.Log("当たったLayer" + layer);
+        
         if(layer != ignoreLayer)
         {
             // 対応するレイヤーなら
@@ -67,11 +66,12 @@ public class ShotPrefabController : MonoBehaviour
             // LayerMaskだとビットなので変換必須な為面倒なのでString検索にします
             // Layermaskめんどくさ
 
-            Debug.Log(hitLayer.value);
+            
             if(layer == hitLayer)
             {
                 // しょうがない、これで
-                textUI.gameObject.SetActive(true);
+                // 直し完了
+                GameManager.Instance.HitORMissTextChange(true);
            
                 var unit = other.transform.parent.gameObject.GetComponent<UnitBase>();
                 // もしUnitが取得できたなら
@@ -82,10 +82,20 @@ public class ShotPrefabController : MonoBehaviour
                     var itemCon = unit.gameObject.GetComponent<FreebieController>().itemMoveCtn;
                     itemCon.isMove = true;
                 }
-                
+
             }
-            
-         
+            else
+            {
+                // 関係ないのに当たったら(Defaultとか)
+                GameManager.Instance.HitORMissTextChange(false);
+            }
+
+
+        }
+        else
+        {
+            // 透過レイヤーの場合にはMiss
+            GameManager.Instance.HitORMissTextChange(false);
         }
 
         // 自身の弾を削除

@@ -13,6 +13,11 @@ public class AudioManager : Singleton<AudioManager>
     [SerializeField] AudioClip[] bgmClips;
     [SerializeField] AudioClip[] seClips;
 
+    // BGMの番号を入れる変数
+    private int bgmClipsPlayNum = 0;
+
+    private int bgmStopTime;
+
 
     /// <summary>
     /// 指定した番号の効果音を再生する。
@@ -29,7 +34,17 @@ public class AudioManager : Singleton<AudioManager>
     /// <param name="namber">効果音の番号</param>
     public void PlayBGM(int namber)
     {
-        audioBGM.PlayOneShot(bgmClips[namber]);
+        Debug.Log(namber + "_" + bgmClipsPlayNum);
+        if(bgmClipsPlayNum != namber)
+        {   
+            // 今再生している音楽の番号の上書き
+            bgmClipsPlayNum = namber;
+            // 止めて再生
+            StopBGM();
+            audioBGM.PlayOneShot(bgmClips[namber]);
+        }
+       
+        
     }
 
     /// <summary>

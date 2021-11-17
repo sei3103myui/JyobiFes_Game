@@ -21,15 +21,18 @@ public enum Phase
 
 public class GameManager : Singleton<GameManager>
 {
-    public Text textHit;
+   
     //[SerializeField] private PlayerInput playerInput;
     [Header("ゲームフェイズ管理")]
     public Phase gamePhase;
 
     [Header("スタート画面の設定値")]
     [SerializeField] private GameObject startPanel; // スタート画面で表示するパネル
-    [SerializeField] private Text startText;　// スタート画面のテキスト
+    [SerializeField] private GameObject startTextParent; // スタート画面のテキストの親オブジェ
+    [SerializeField] public Text startText;　// スタート画面のテキスト
     [SerializeField] private Text countDownText; // カウントダウン用のテキスト
+
+    [SerializeField] public GameObject startPointButtonParent;
 
 
     [Header("ゲーム中のUI")]
@@ -49,7 +52,15 @@ public class GameManager : Singleton<GameManager>
     [Header("射撃フェイズ前の待機時に使用する設定値")]
     [SerializeField] private GameObject readyPanel;
     [SerializeField] private Text readyText;
-    
+
+    [Header("射撃待ちで使用する設定値")]
+    // テキスト
+    public Text textHit;
+    // 色
+    [SerializeField]private Color hitColor;
+    [SerializeField]private Color missColor;
+
+
     [Header("リザルト画面の設定値")]
     [SerializeField] private GameObject resultPanel;
     [SerializeField] private Text resultScoreText;
@@ -65,6 +76,9 @@ public class GameManager : Singleton<GameManager>
     public static bool isChoiceDown;
 
     private bool isReset;
+
+    // 枚数選択による弾設定が終わったかのbool
+    public bool isBulletSet;
 
     [Header("ImagePosManagerを格納")]
     public UIImagePosManager uiImagePosManager;
@@ -83,9 +97,11 @@ public class GameManager : Singleton<GameManager>
     {
         // フェイズ
         gamePhase = Phase.StandBy;
+        isBulletSet = false;
         maxBulletCnt = bulletCnt;
         // UIの初期表示状態
         startPanel.SetActive(true);
+        startTextParent.gameObject.SetActive(true);
         startText.gameObject.SetActive(true);
 
         countDownText.gameObject.SetActive(false);
@@ -98,6 +114,9 @@ public class GameManager : Singleton<GameManager>
     // テンプレート
     void Start()
     {
+        startText.text = "枚数を選択してください";
+        // 通常bgmを再生
+        AudioManager.Instance.PlayBGM(3);
         // InputSystemを使用する場合
         //spaceInputAction = playerInput.actions.FindAction(spaceInputName);
 
@@ -116,10 +135,12 @@ public class GameManager : Singleton<GameManager>
     {
         // スペースキーが押されたかつ現在のフェイズがStandByなら
         if (Keyboard.current.spaceKey.wasReleasedThisFrame &&
-            gamePhase == Phase.StandBy)
+            gamePhase == Phase.StandBy && isBulletSet)
         {   
             if(countDownRoutine == null)
             {
+                
+                // ルーチンに格納
                 countDownRoutine = CountdownRoutine();
                 StartCoroutine(CountdownRoutine());
             }
@@ -159,57 +180,42 @@ public class GameManager : Singleton<GameManager>
                 break;
         }
 
-
+        #region テスト用のKeyboard達
         // テスト用
 
         // スコアを加算する
         // 条件: 景品を獲得したとき
         // 実際の挙動はできた為削除して良き
-        if (Keyboard.current.aKey.wasReleasedThisFrame)
-        {
-            Debug.LogError("スコアが入りました");
-            AddScore(1000);
-        }
+        //if (Keyboard.current.aKey.wasReleasedThisFrame)
+        //{
+        //    Debug.LogError("スコアが入りました");
+        //    AddScore(1000);
+        //}
 
         // リザルトの表示
         // 条件: 全弾撃ち終えたら
         // 実際の挙動はできた為削除して良き
-        if (Keyboard.current.cKey.wasReleasedThisFrame)
-        {
-            Debug.LogError("リザルトを表示します");
-            gamePhase = Phase.Result;
+        //if (Keyboard.current.cKey.wasReleasedThisFrame)
+        //{
+        //    Debug.LogError("リザルトを表示します");
+        //    gamePhase = Phase.Result;
 
-        }
+        //}
+
+        #endregion 
 
         // シーンの再読み込み
         // 条件: リザルト画面でもどるボタンが押されたとき
         // 実際の挙動はできた為削除して良き
-        if (Keyboard.current.rKey.wasReleasedThisFrame)
-        {
-            Debug.LogError("最初に戻る");
-            OnPushBackButton();
-        }
+        // リロードボタンつくるか
+       
 
-        // Shoot移行前の待機ルーチン格納用
-        // 条件: 景品を選択して射撃フェイズに移行するタイミング
-        // 関数に移動した為削除して良き
-        if (Keyboard.current.oKey.wasReleasedThisFrame)
-        {
-            Debug.LogError("Readyフェイズ読み込み");
-            
-        }
+       
 
     }
 
 
-   /// <summary>
-   /// 
-   /// </summary>
-   /// <param name="num">枚数</param>
-    public void SelectSheetClick(GameObject obj)
-    {
-
-    }
+ 
 
     /// <summary>
     /// ボタン(遊ぶ)に追加する関数
@@ -269,8 +275,10 @@ public class GameManager : Singleton<GameManager>
     {   
         // 射撃ボタン
         // コントローラーの場合修正
-        if (Keyboard.current.spaceKey.wasPressedThisFrame && !isShoot)
+        if (Keyboard.current.enterKey.wasPressedThisFrame && !isShoot)
         {
+            // SE再生
+            AudioManager.instance.PlaySE(1);
             bulletCnt--;
             Debug.Log("撃ったよ");
             // もし撃つボタンが押されたなら
@@ -300,23 +308,23 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     public void ChoiceClick()
     {
-        AudioManager.Instance.StopBGM();
         gamePhase = Phase.Ready;
         uiImagePosManager.parentChoiceUIObj.SetActive(false);
         uiImagePosManager.parentShotUIObj.SetActive(true);
-        if(choiceNum == 4)
+        if(choiceNum == 0)
         {
-            // bgmをアンパンマンへ
-            AudioManager.Instance.StopBGM();
+           
+            // とっとこ走るよ
             AudioManager.Instance.PlayBGM(1);
         }
-        else if (choiceNum == 0)
+        else if (choiceNum == 4)
         {
+            // 何のために生まれて何をして生きるのか
             AudioManager.Instance.PlayBGM(2);
         }
         else
         {
-            AudioManager.Instance.StopBGM();
+         
             // 通常bgmを再生
             AudioManager.Instance.PlayBGM(3);
         }
@@ -366,7 +374,7 @@ public class GameManager : Singleton<GameManager>
     {
         // UIの表示非表示
         countDownText.gameObject.SetActive(true);
-        startText.gameObject.SetActive(false);
+        startTextParent.gameObject.SetActive(false);
 
         AudioManager.Instance.PlaySE(0);
         // カウントダウンをテキストに変更する
@@ -429,6 +437,24 @@ public class GameManager : Singleton<GameManager>
         shootEndRoutine = null;
         // 
         yield return null;
+    }
+
+    public void HitORMissTextChange(bool isHit)
+    {
+        textHit.gameObject.SetActive(true);
+        // 当たった場合と外れた場合のif分岐
+        if (isHit)
+        {
+            // テキスト変更 + 色変更
+            textHit.text = "ヒット！！";
+            textHit.color = hitColor;
+        }
+        else
+        {
+            // 外れなので
+            textHit.text = "ミス。。";
+            textHit.color = missColor;
+        }
     }
 
 
