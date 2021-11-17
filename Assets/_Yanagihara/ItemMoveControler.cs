@@ -34,6 +34,8 @@ public class ItemMoveControler : MonoBehaviour
     {
         yield return new WaitForSeconds(time);
         isMove = false;
+        // ‰Šú’l‚ÌRot‚É–ß‚·
+        transform.rotation = defaultRotation;
     }
 
     public void ActiveItemFlg()
